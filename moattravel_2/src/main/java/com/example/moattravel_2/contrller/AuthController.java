@@ -24,11 +24,11 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AuthController {
 	private final UserService userService;
 	private final SignupEventPublisher signupEventPublisher;
-	private VerificationTokenService verificationTokenService;
+	private final VerificationTokenService verificationTokenService;
 	
-	public AuthController(UserService userService, SignupEventPublisher signupPublisher, VerificationTokenService verificationTokenService) {
+	public AuthController(UserService userService, SignupEventPublisher signupEventPublisher, VerificationTokenService verificationTokenService) {
 		this.userService = userService;
-		this.signupEventPublisher  = signupPublisher;
+		this.signupEventPublisher  = signupEventPublisher;
 		this.verificationTokenService = verificationTokenService;
 	}
 	
@@ -66,16 +66,15 @@ public class AuthController {
 			return "auth/signup";
 		}
 		
-		userService.create(signupForm);
-		redirectAttributes.addFlashAttribute("successMessage", "会員登録が完了しました。");
 		User createdUser = userService.create(signupForm);
-		String requestUrl = new String(httpServletRequest.getRequestURI());
+		String requestUrl = new String(httpServletRequest.getRequestURL());
+		signupEventPublisher.publishSignupEvent(createdUser, requestUrl);
 		redirectAttributes.addFlashAttribute("successMessage", "ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");
 		return "redirect:/";
 	}
 	
 	@GetMapping("/signup/verify")//URLを踏んだらアカウントを有効にするための処理
-	public String verify(@RequestParam String token, Model model) {
+	public String verify(@RequestParam (name = "token")String token, Model model) {
 		//@RequestParamは?key=valueを受け取るためのアノテーション
 		VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
 		
