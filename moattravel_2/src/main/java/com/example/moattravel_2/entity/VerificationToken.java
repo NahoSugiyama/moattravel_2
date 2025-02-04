@@ -1,6 +1,6 @@
 package com.example.moattravel_2.entity;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

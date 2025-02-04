@@ -33,7 +33,7 @@ public class SignupEventListener {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();//インスタンス生成（メール内容を設定するためのオブジェクト）
 		mailMessage.setTo(recipientAddress);
 		mailMessage.setSubject(subject);
-		mailMessage.setText(message + "\n" + confirmationUrl);	//"\n"は開業して、本文とURLを見やすくしているだけ
+		mailMessage.setText(message + "\n" + confirmationUrl);	//"\n"は改行して、本文とURLを見やすくしているだけ
 		javaMailSender.send(mailMessage);//ここで実際にメールを送信する
 	}
 	

@@ -1,12 +1,11 @@
 package com.example.moattravel_2.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.moattravel_2.entity.User;
 import com.example.moattravel_2.entity.VerificationToken;
 import com.example.moattravel_2.repository.VerificationTokenRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class VerificationTokenService {
