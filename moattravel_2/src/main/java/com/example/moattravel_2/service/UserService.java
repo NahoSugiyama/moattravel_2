@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.moattravel_2.entity.Role;
 import com.example.moattravel_2.entity.User;
 import com.example.moattravel_2.form.SignupForm;
+import com.example.moattravel_2.form.UserEditForm;
 import com.example.moattravel_2.repository.RoleRepository;
 import com.example.moattravel_2.repository.UserRepository;
 
@@ -40,6 +41,20 @@ public class UserService {
 		return userRepository.save(user);
 	}
 	
+	@Transactional
+	public void update(UserEditForm userEditForm) {
+		User user = userRepository.getReferenceById(userEditForm.getId());
+		
+		user.setName(userEditForm.getName());
+		user.setFurigana(userEditForm.getFurigana());
+		user.setPostalCode(userEditForm.getPostalCode());
+		user.setAddress(userEditForm.getAddress());
+		user.setPhoneNumber(userEditForm.getPhoneNumber());
+		user.setEmail(userEditForm.getEmail());
+
+		userRepository.save(user);
+	}
+	
 	//メールアドレスが登録済みか否かチェック
 	public boolean isEmailRegistered(String email) {
 		User user = userRepository.findByEmail(email);//メールアドレスを持つユーザーを探す、無かったらnullが入る
@@ -56,5 +71,12 @@ public class UserService {
 	public void enableUser(User user) {
 		user.setEnabled(true);
 		userRepository.save(user);
+	}
+	
+	//メールアドレスが変更されたかどうかチェックする
+	public boolean isEmailCahanged(UserEditForm userEditForm) {
+		User currentUser = userRepository.getReferenceById(userEditForm.getId());
+		return !userEditForm.getEmail().equals(currentUser.getEmail());
+				
 	}
 }
