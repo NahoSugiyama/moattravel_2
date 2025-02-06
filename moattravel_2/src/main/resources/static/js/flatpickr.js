@@ -3,7 +3,7 @@ maxDate = maxDate.setMonth(maxDate.getMonth() + 3);
 
 flatpickr('#fromCheckinDateToCheckoutDate', {
 	mode: "range",
-	locale: 'ja',
+	locale: 'ja ',
 	minDate:'today',
 	maxDate: maxDate
 });
